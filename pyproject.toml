@@ -1,0 +1,37 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ticket-system-api"
+version = "0.1.0"
+description = "A clean, production-style REST API for an IT support ticketing system."
+readme = "README.md"
+requires-python = ">=3.11"
+license = { file = "LICENSE" }
+authors = [
+    { name = "Seyyid Sahin", email = "seyyidsahin2834@gmail.com" }
+]
+keywords = ["fastapi", "ticketing", "rest", "sqlalchemy", "portfolio"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.13",
+    "Framework :: FastAPI",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+Homepage = "https://github.com/seyyidsahin2834/ticket-system-api"
+Issues = "https://github.com/seyyidsahin2834/ticket-system-api/issues"
+
+[tool.setuptools.packages.find]
+include = ["app*"]
+exclude = ["tests*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra -q"
+filterwarnings = [
+    "ignore::DeprecationWarning",
+]
