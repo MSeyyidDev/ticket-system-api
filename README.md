@@ -1,5 +1,9 @@
 # ticket-system-api
 
+[![CI](https://github.com/MSeyyidDev/ticket-system-api/actions/workflows/ci.yml/badge.svg)](https://github.com/MSeyyidDev/ticket-system-api/actions/workflows/ci.yml)
+[![Python 3.11+](https://img.shields.io/badge/python-3.11%2B-blue.svg)](https://www.python.org/downloads/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
 > A clean, production-style REST API for an IT support ticketing system, written in Python with FastAPI and SQLAlchemy 2.0.
 
 This project demonstrates how to design and ship a non-trivial REST API: a layered, testable architecture with proper authentication, a state-machine-validated ticket lifecycle, rich filtering and pagination, and a generous synthetic data set so the analytics surface is never empty.
