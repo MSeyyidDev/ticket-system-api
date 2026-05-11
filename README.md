@@ -8,17 +8,21 @@
 
 This project demonstrates how to design and ship a non-trivial REST API: a layered, testable architecture with proper authentication, a state-machine-validated ticket lifecycle, rich filtering and pagination, and a generous synthetic data set so the analytics surface is never empty.
 
-It is deliberately self-contained — SQLite, no Docker, no managed services — so a reviewer can clone it and have a working server with thousands of realistic tickets in under a minute.
+It is deliberately self-contained â€” SQLite, no Docker, no managed services â€” so a reviewer can clone it and have a working server with thousands of realistic tickets in under a minute.
+
+**Deploy-ready demo:** `render.yaml` runs `python -m app.seed` before Uvicorn,
+so a hosted Swagger UI always starts with realistic demo data. After deploying
+on Render, open `/docs` for the live API walkthrough.
 
 ## Highlights
 
-- FastAPI with tagged routers, summaries, and request examples — Swagger UI at `/docs` is browseable.
+- FastAPI with tagged routers, summaries, and request examples â€” Swagger UI at `/docs` is browseable.
 - Clean layered architecture: `models` (SQLAlchemy), `schemas` (Pydantic v2), `repositories`, `services`, `routers`. No god files.
 - JWT bearer auth (`python-jose`) with role-based dependencies (`requester`, `agent`, `admin`).
-- State machine on ticket status — invalid transitions return `409 Conflict` with a precise message.
+- State machine on ticket status â€” invalid transitions return `409 Conflict` with a precise message.
 - Powerful list endpoint: filter by status / priority / category / assignee / requester, free-text search, sortable, paginated.
 - Synthetic seed: 100 users, 1,000 tickets spanning 12 months, 5,000-8,000 comments, 20 tags, realistic IT-support tone.
-- 28+ pytest tests covering happy and unhappy paths against an isolated SQLite test database.
+- 32 pytest tests covering happy and unhappy paths against an isolated SQLite test database.
 - Project hygiene: pinned `requirements.txt`, `pyproject.toml`, `.env.example`, `Makefile`, MIT licence.
 
 ## Architecture
@@ -72,22 +76,22 @@ Pydantic v2 schemas live alongside the layers above and form the public API cont
 
 ```
 ticket-system-api/
-├── app/
-│   ├── core/           # config, database, security, dependencies
-│   ├── models/         # SQLAlchemy ORM classes
-│   ├── schemas/        # Pydantic request/response models
-│   ├── repositories/   # query objects (one per aggregate)
-│   ├── services/       # business logic
-│   ├── routers/        # FastAPI routers
-│   ├── main.py         # application factory
-│   └── seed.py         # synthetic data generator
-├── tests/              # pytest suite (isolated SQLite DB)
-├── docs/screenshots/   # placeholder for Swagger UI screenshots
-├── requirements.txt
-├── pyproject.toml
-├── Makefile
-├── LICENSE
-└── README.md
+â”œâ”€â”€ app/
+â”‚   â”œâ”€â”€ core/           # config, database, security, dependencies
+â”‚   â”œâ”€â”€ models/         # SQLAlchemy ORM classes
+â”‚   â”œâ”€â”€ schemas/        # Pydantic request/response models
+â”‚   â”œâ”€â”€ repositories/   # query objects (one per aggregate)
+â”‚   â”œâ”€â”€ services/       # business logic
+â”‚   â”œâ”€â”€ routers/        # FastAPI routers
+â”‚   â”œâ”€â”€ main.py         # application factory
+â”‚   â””â”€â”€ seed.py         # synthetic data generator
+â”œâ”€â”€ tests/              # pytest suite (isolated SQLite DB)
+â”œâ”€â”€ docs/screenshots/   # placeholder for Swagger UI screenshots
+â”œâ”€â”€ requirements.txt
+â”œâ”€â”€ pyproject.toml
+â”œâ”€â”€ Makefile
+â”œâ”€â”€ LICENSE
+â””â”€â”€ README.md
 ```
 
 ## Setup
@@ -97,7 +101,7 @@ ticket-system-api/
 ### Using `pip` + `venv` (recommended for portability)
 
 ```bash
-git clone https://github.com/seyyidsahin2834/ticket-system-api.git
+git clone https://github.com/MSeyyidDev/ticket-system-api.git
 cd ticket-system-api
 
 python -m venv .venv
@@ -135,7 +139,7 @@ INFO seed :: Seeding comments ...
 INFO seed :: Done. users=100 tags=20 tickets=1000 comments=~5500
 ```
 
-The seed is idempotent — running it again wipes the database first and rebuilds it from a fixed random seed for reproducible demos.
+The seed is idempotent â€” running it again wipes the database first and rebuilds it from a fixed random seed for reproducible demos.
 
 ## Run the server
 
@@ -190,10 +194,10 @@ The suite uses its own SQLite file under `tests/test_tickets.db`, recreated per 
 ### Ticket status machine
 
 ```
-open ──> in_progress ──> resolved ──> closed
-  │           │               ▲
-  │           v               │
-  └──> pending <──────────────┘
+open â”€â”€> in_progress â”€â”€> resolved â”€â”€> closed
+  â”‚           â”‚               â–²
+  â”‚           v               â”‚
+  â””â”€â”€> pending <â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
 ```
 
 Any other transition returns `409 Conflict`.
@@ -269,6 +273,20 @@ curl -s http://127.0.0.1:8000/stats/overview -H "Authorization: Bearer $TOKEN"
 
 > Swagger UI screenshot lives at `docs/screenshots/swagger.png`. To capture it, run the server (`make run`) and take a screenshot of `http://127.0.0.1:8000/docs`. A `.gitkeep` file is committed in the meantime.
 
+## Hosted demo
+
+Deploy the repository with Render Blueprint support:
+
+```bash
+python -m app.seed
+uvicorn app.main:app --host 0.0.0.0 --port 8000
+```
+
+Then open:
+
+- Swagger UI: `https://your-render-service.onrender.com/docs`
+- Health check: `https://your-render-service.onrender.com/health`
+
 ## Development tasks
 
 ```bash
@@ -283,3 +301,4 @@ make clean     # remove caches and the SQLite database
 ## License
 
 MIT - see [LICENSE](LICENSE).
+

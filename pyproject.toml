@@ -22,8 +22,8 @@ classifiers = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/seyyidsahin2834/ticket-system-api"
-Issues = "https://github.com/seyyidsahin2834/ticket-system-api/issues"
+Homepage = "https://github.com/MSeyyidDev/ticket-system-api"
+Issues = "https://github.com/MSeyyidDev/ticket-system-api/issues"
 
 [tool.setuptools.packages.find]
 include = ["app*"]
@@ -35,3 +35,4 @@ addopts = "-ra -q"
 filterwarnings = [
     "ignore::DeprecationWarning",
 ]
+
